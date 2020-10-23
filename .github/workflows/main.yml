@@ -6,8 +6,61 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      # TODO Build projects
-      # TODO deploy to Heroku
+      - name: Set up Python 3.9
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      - name: Run Tests
+        run: |
+          python order_service/manage.py test
+          python store_service/manage.py test
+          python warehouse_service/manage.py test
+          python warranty_service/manage.py test
+      - name: Lint with flake8
+        run: |
+          pip install flake8
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 order_service store_service warehouse_service warranty_service --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 order_service store_service warsehouse_service warranty_service --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+      - name: Copy requirements to all service
+        run: |
+          cp requirements.txt store_service/
+          cp requirements.txt order_service/
+          cp requirements.txt warehouse_service/
+          cp requirements.txt warranty_service/
+      - name: Deploy Order to Heroku
+        uses: AkhileshNS/heroku-deploy@v3.4.6
+        with:
+          heroku_api_key: "f8244834-f822-4b39-b8b9-a29d90dbe91f"
+          heroku_app_name: "shmarov-rsoi-lab2-order"
+          heroku_email: "bambookchos@gmail.com"
+          appdir: order_service
+      - name: Deploy Store to Heroku
+        uses: AkhileshNS/heroku-deploy@v3.4.6
+        with:
+          heroku_api_key: "f8244834-f822-4b39-b8b9-a29d90dbe91f"
+          heroku_app_name: "shmarov-rsoi-lab2-store"
+          heroku_email: "bambookchos@gmail.com"
+          appdir: store_service
+      - name: Deploy Warehouse to Heroku
+        uses: AkhileshNS/heroku-deploy@v3.4.6
+        with:
+          heroku_api_key: "f8244834-f822-4b39-b8b9-a29d90dbe91f"
+          heroku_app_name: "shmarov-rsoi-lab2-warehouse"
+          heroku_email: "bambookchos@gmail.com"
+          appdir: warehouse_service
+      - name: Deploy Warranty to Heroku
+        uses: AkhileshNS/heroku-deploy@v3.4.6
+        with:
+          heroku_api_key: "f8244834-f822-4b39-b8b9-a29d90dbe91f"
+          heroku_app_name: "shmarov-rsoi-lab2-warranty"
+          heroku_email: "bambookchos@gmail.com"
+          appdir: warranty_service
       - name: Run API Tests
         id: run-newman
         uses: anthonyvscode/newman-action@v1
