@@ -14,12 +14,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-      - name: Run Tests
-        run: |
-          python order_service/manage.py test
-          python store_service/manage.py test
-          python warehouse_service/manage.py test
-          python warranty_service/manage.py test
       - name: Lint with flake8
         run: |
           pip install flake8

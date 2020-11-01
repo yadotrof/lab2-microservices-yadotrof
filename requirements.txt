@@ -1,9 +1,0 @@
-Django
-djangorestframework
-django-filter
-psycopg2-binary
-django_heroku
-markdown
-uritemplate
-gunicorn
-requests
