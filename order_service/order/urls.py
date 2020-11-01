@@ -1,4 +1,4 @@
-from django.urls import path, re_path, include
+from django.urls import path, re_path
 from rest_framework.schemas import get_schema_view
 from . import views
 
@@ -10,4 +10,3 @@ urlpatterns = [
                                     description="Order service API",
                                     version="1.0.0"), name='openapi-schema')
 ]
-

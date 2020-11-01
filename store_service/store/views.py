@@ -6,7 +6,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from.models import User
+from .models import User
 from .serializers import RequestItemSerializer
 from .serializers import WarrantyRequestSerializer
 
@@ -21,14 +21,14 @@ class Purchase(APIView):
         if serializer.is_valid():
             res = requests.post(f'{settings.ORDER_URL}api/v1/orders/{user_uuid}',
                                 data={'model': serializer.validated_data['model'],
-                                    'size': serializer.validated_data['size']})
+                                      'size': serializer.validated_data['size']})
             resp = Response(res.json(), 201 if res.status_code == 200 else res.status_code)
             if res.status_code == 200:
                 resp['Location'] = f'{settings.ORDER_URL}api/v1/orders/{user_uuid}/{res.json()["order_uuid"]}'
             return resp
         else:
-            return Response({'message': f'Bad request'},
-                    status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': 'Bad request'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
 
 class OrderList(APIView):
@@ -50,6 +50,7 @@ class OrderList(APIView):
             order['warranty_date'] = warranty['date']
             order['warranty_status'] = warranty['status']
         return Response(orders, status.HTTP_200_OK)
+
 
 class OrderDetail(APIView):
     def get(self, request, user_uuid, order_uuid, format=None):
@@ -80,11 +81,10 @@ class Warranty(APIView):
         if seriallizer.is_valid():
             res = requests.post(f'{settings.ORDER_URL}api/v1/orders/{order_uuid}/warranty',
                                 data=seriallizer.validated_data)
-            data = res.json()
             return Response(res.json(), res.status_code)
         else:
-            return Response({'message': f'Bad request'},
-                    status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': 'Bad request'},
+                            status=status.HTTP_400_BAD_REQUEST)
 
 
 class Refund(APIView):
