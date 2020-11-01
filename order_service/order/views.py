@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from .serializers import UsersOrderSerializer, RequestItemSerializer, WarrantyRequestSerializer
 from .models import Order
 from django.shortcuts import get_object_or_404
+from django.conf import settings
 import requests
 from uuid import uuid4
 
@@ -24,13 +25,13 @@ def order_actions(request, uuid):
         serializer = RequestItemSerializer(data=request.data)
         if serializer.is_valid():
             order_uuid = uuid4()
-            res = requests.post('http://warehouse:8002/api/v1/warehouse/', 
+            res = requests.post(f'{settings.WAREHOUSE_URL}api/v1/warehouse/', 
                                 data={'model': serializer.validated_data['model'],
                                         'size': serializer.validated_data['size'],
                                         'order_uuid': order_uuid})
             if res.status_code == 200:
                 data = res.json()
-                requests.post(f'http://warranty:8003/api/v1/warranty/{data["item_uuid"]}')
+                requests.post(f'{settings.WARRANTY_URL}api/v1/warranty/{data["item_uuid"]}')
                 Order.objects.create(uuid=data['order_uuid'],
                                      item_uuid = data['item_uuid'],
                                      user_uuid = uuid)
@@ -44,8 +45,8 @@ def order_actions(request, uuid):
         """
         order = get_object_or_404(Order, uuid=uuid)
         try:
-            requests.delete(f'http://warranty:8003/api/v1/warranty/{order.item_uuid}')
-            res = requests.delete(f'http://warehouse:8002/api/v1/warehouse/{order.item_uuid}')
+            requests.delete(f'{settings.WARRANTY_URL}api/v1/warranty/{order.item_uuid}')
+            res = requests.delete(f'{settings.WAREHOUSE_URL}api/v1/warehouse/{order.item_uuid}')
             order.delete()
         except:
             return Response({'message': 'External request failed'}, status.HTTP_422_UNPROCESSABLE_ENTITY)
@@ -78,7 +79,7 @@ def warranty_request(request, order_uuid):
     if serializer.is_valid():
         object = get_object_or_404(Order, uuid=order_uuid)
         data = serializer.validated_data
-        res = requests.post(f'http://warehouse:8002/api/v1/warehouse/{object.item_uuid}/warranty',
+        res = requests.post(f'{settings.WAREHOUSE_URL}api/v1/warehouse/{object.item_uuid}/warranty',
                             data=data)
         return Response(res.json(), res.status_code)
     else:

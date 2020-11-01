@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
+import os
 import django_heroku
 from pathlib import Path
 
@@ -120,6 +121,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STORE_URL=os.environ.get('STORE_URL', 'localhost:8000')
+ORDER_URL=os.environ.get('ORDER_URL', 'localhost:8001')
+WAREHOUSE_URL=os.environ.get('WAREHOUSE_URL', 'localhost:8002')
+WARRANTY_URL=os.environ.get('WARRANTY_URL', 'localhost:8003')
 
 # Activate Django-Heroku.
 django_heroku.settings(locals(), test_runner=False)

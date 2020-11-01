@@ -1,6 +1,7 @@
 import requests
 from uuid import uuid4
 
+from django.conf import settings
 from django.shortcuts import get_object_or_404
 from django.db.models import F
 from rest_framework import status
@@ -76,7 +77,7 @@ def request_warranty(request, item_uuid):
                                    item_uuid=item_uuid)
         data = seriallizer.validated_data
         data['avaliable_count'] = object.item.available_count
-        res = requests.post(f'http://warranty:8003/api/v1/warranty/{item_uuid}/warranty',
+        res = requests.post(f'{settings.WARRANTY_URL}api/v1/warranty/{item_uuid}/warranty',
                             data=data)
         
         return Response(res.json(), res.status_code)
