@@ -6,3 +6,4 @@ django_heroku
 markdown
 uritemplate
 gunicorn
+django-health-check
