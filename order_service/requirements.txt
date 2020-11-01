@@ -8,3 +8,5 @@ uritemplate
 gunicorn
 requests
 django-health-check
+uritemplate
+pyyaml

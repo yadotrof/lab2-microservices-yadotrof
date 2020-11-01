@@ -3,17 +3,15 @@ import pytz
 
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from rest_framework.response import Response
 
 from .models import Warranty
 from .serializers import WarrantySerializer
 from .serializers import WarrantyRequestSerializer
 
-
-@api_view(['GET', 'POST','DELETE'])
-def warranty_actions(request, item_uuid):
-    if request.method == 'GET':
+class WarrantyActions(APIView):
+    def get(self, request, item_uuid, format=None):
         """
         Check warranty status.
         """
@@ -21,7 +19,7 @@ def warranty_actions(request, item_uuid):
         serializer = WarrantySerializer(object)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    if request.method == 'POST':
+    def post(self, request, item_uuid, format=None):
         """
         Start warranty
         """
@@ -30,7 +28,7 @@ def warranty_actions(request, item_uuid):
                                 item_uuid=item_uuid)
         return Response({'message': 'Warranty started for item'}, status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
 
-    if request.method == 'DELETE':
+    def delete(self, request, item_uuid, format=None):
         """
         Stop warranty
         """
@@ -38,32 +36,29 @@ def warranty_actions(request, item_uuid):
         warranty.delete()
         return Response({'message': 'Warranty closed for item'}, status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
 
-    return Response({'message': f'Bad request'},
-                    status=status.HTTP_400_BAD_REQUEST)
 
-
-@api_view(['POST'])
-def request_warranty(request, item_uuid):
-    """
-    Requesr warranty
-    """
-    serializer = WarrantyRequestSerializer(data=request.data)
-    if serializer.is_valid():
-        target_date = (datetime.datetime.today() - datetime.timedelta(days=30)).replace(tzinfo=pytz.UTC)
-        object = get_object_or_404(Warranty, item_uuid=item_uuid)
-        if object.status == 'ON_WARRANTY' and object.date > target_date:
-            if serializer.validated_data['avaliable_count'] > 0:
-                result = 'RETURN'
+class RequestWarranty(APIView):
+    def post(self, request, item_uuid, format=None):
+        """
+        Requesr warranty
+        """
+        serializer = WarrantyRequestSerializer(data=request.data)
+        if serializer.is_valid():
+            target_date = (datetime.datetime.today() - datetime.timedelta(days=30)).replace(tzinfo=pytz.UTC)
+            object = get_object_or_404(Warranty, item_uuid=item_uuid)
+            if object.status == 'ON_WARRANTY' and object.date > target_date:
+                if serializer.validated_data['avaliable_count'] > 0:
+                    result = 'RETURN'
+                else:
+                    result = 'FIXING'
+                object.status = 'USE_WARRANTY'
+                object.save()
             else:
-                result = 'FIXING'
-            object.status = 'USE_WARRANTY'
-            object.save()
+                result = 'REFUSED'
+                object.status = 'REMOVED_FROM_WARRANTY'
+                object.save()
+            return Response({'decision': result, 'date': object.date},
+                            status.HTTP_200_OK)
         else:
-            result = 'REFUSED'
-            object.status = 'REMOVED_FROM_WARRANTY'
-            object.save()
-        return Response({'decision': result, 'date': object.date},
-                        status.HTTP_200_OK)
-    else:
-        return Response({'message': f'Bad request'},
-                        status=status.HTTP_400_BAD_REQUEST)
+            return Response({'message': f'Bad request'},
+                            status=status.HTTP_400_BAD_REQUEST)

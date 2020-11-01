@@ -7,3 +7,5 @@ markdown
 uritemplate
 gunicorn
 django-health-check
+uritemplate
+pyyaml
