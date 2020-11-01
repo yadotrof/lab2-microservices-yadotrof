@@ -50,8 +50,8 @@ def order_actions(request, uuid):
             order.delete()
         except:
             return Response({'message': 'External request failed'}, status.HTTP_422_UNPROCESSABLE_ENTITY)
-        if res.status_code == 204:
-            return Response({'message': 'Order returned'}, status.HTTP_204_NO_CONTENT)
+        if res.status_code == 203:
+            return Response({'message': 'Order returned'}, status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
         if res.status_code == 404:
             return Response({'message': 'Order not found'}, status.HTTP_404_NOT_FOUND)
         if res.status_code == 400:

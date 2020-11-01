@@ -28,7 +28,7 @@
 								"id": "31914c3e-d894-421f-9498-ed8a026d062f",
 								"exec": [
 									"pm.test(\"Start warranty\", function() {",
-									"    pm.response.to.have.status(204)",
+									"    pm.response.to.have.status(203)",
 									"})"
 								],
 								"type": "text/javascript"
@@ -176,7 +176,7 @@
 								"id": "5c5ad9d8-00d0-4b15-9109-504af0951623",
 								"exec": [
 									"pm.test(\"Stop warranty\", function() {",
-									"    pm.response.to.have.status(204)",
+									"    pm.response.to.have.status(203)",
 									"})"
 								],
 								"type": "text/javascript"
@@ -453,7 +453,7 @@
 								"id": "eb44fa43-9d1e-42dc-8374-0b20fbc0218e",
 								"exec": [
 									"pm.test(\"Return item\", function() {",
-									"    pm.response.to.have.status(204)",
+									"    pm.response.to.have.status(203)",
 									"})"
 								],
 								"type": "text/javascript"
@@ -755,7 +755,7 @@
 								"id": "0e6d71e4-c771-49c6-8a72-63353ca4631c",
 								"exec": [
 									"pm.test(\"Return order\", function() {",
-									"    pm.response.to.have.status(204)",
+									"    pm.response.to.have.status(203)",
 									"})"
 								],
 								"type": "text/javascript"
@@ -1077,7 +1077,7 @@
 								"id": "82ebe385-aea9-4fb1-a4ef-8d3abf2f951a",
 								"exec": [
 									"pm.test(\"Return order\", function() {",
-									"    pm.response.to.have.status(204)",
+									"    pm.response.to.have.status(203)",
 									"})"
 								],
 								"type": "text/javascript"

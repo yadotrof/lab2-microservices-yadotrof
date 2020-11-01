@@ -28,7 +28,7 @@ def warranty_actions(request, item_uuid):
         Warranty.objects.create(comment='',
                                 status='ON_WARRANTY',
                                 item_uuid=item_uuid)
-        return Response({'message': 'Warranty started for item'}, status.HTTP_204_NO_CONTENT)
+        return Response({'message': 'Warranty started for item'}, status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
 
     if request.method == 'DELETE':
         """
@@ -36,7 +36,7 @@ def warranty_actions(request, item_uuid):
         """
         warranty = get_object_or_404(Warranty, item_uuid=item_uuid)
         warranty.delete()
-        return Response({'message': 'Warranty closed for item'}, status.HTTP_204_NO_CONTENT)
+        return Response({'message': 'Warranty closed for item'}, status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
 
     return Response({'message': f'Bad request'},
                     status=status.HTTP_400_BAD_REQUEST)

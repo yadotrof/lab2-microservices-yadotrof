@@ -93,7 +93,4 @@ def request_refund(request, user_uuid, order_uuid):
     """
     get_object_or_404(User, uuid=user_uuid)
     res = requests.delete(f'{settings.ORDER_URL}api/v1/orders/{order_uuid}')
-    if res.status_code == 204:
-        return Response({'message': 'Order returned'}, status.HTTP_204_NO_CONTENT)
-    else:
-        return(res.json(), res.status_code)
+    return Response(res.json(), res.status_code)

@@ -36,7 +36,7 @@ def item_detail(request, item_uuid):
             orderitem.canceled=True
             orderitem.save()
             return Response({'message': 'Item returned'},
-                            status=status.HTTP_204_NO_CONTENT)
+                            status=status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
         else:
             return Response({'message': 'Item already returned'},
                             status=status.HTTP_400_BAD_REQUEST)
