@@ -16,7 +16,7 @@ class Purchase(APIView):
         """
         Create purchase.
         """
-        get_object_or_404(User, user_uuid=user_uuid)
+        get_object_or_404(User, uuid=user_uuid)
         serializer = RequestItemSerializer(data=request.data)
         if serializer.is_valid():
             res = requests.post(f'{settings.ORDER_URL}api/v1/orders/{user_uuid}',
