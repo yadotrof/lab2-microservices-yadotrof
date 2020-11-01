@@ -7,4 +7,4 @@ class Order(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=255, null=False, default='PAID')
     item_uuid = models.UUIDField(default=uuid4, unique=True)
-    user_uuid = models.UUIDField(default=uuid4, unique=True)
+    user_uuid = models.UUIDField(default=uuid4)
