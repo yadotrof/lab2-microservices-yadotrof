@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "f4e7fbec-3189-4058-a115-c7b4b5c9a7b7",
+		"_postman_id": "36ea2322-d1c6-4c01-8c46-d497679bdbe9",
 		"name": "Services",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -14,7 +14,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "d77c3b77-4bfb-49c5-bdf3-f9897fbfb8b2",
+								"id": "7c6b51e9-5260-438b-ab46-84be35f8d078",
 								"exec": [
 									"var uuid = require(\"uuid\");",
 									"postman.setEnvironmentVariable(\"itemUid\", uuid.v4());"
@@ -25,7 +25,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "dcb1d080-35de-45de-83a4-1e02a65892af",
+								"id": "31914c3e-d894-421f-9498-ed8a026d062f",
 								"exec": [
 									"pm.test(\"Start warranty\", function() {",
 									"    pm.response.to.have.status(204)",
@@ -69,7 +69,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "90f679df-2043-442b-9800-5a7ee934b91a",
+								"id": "5a69fec1-82d2-4dcb-b95b-c0314b05ebb2",
 								"exec": [
 									"pm.test(\"Warranty status\", function() {",
 									"    pm.response.to.have.status(200)",
@@ -77,7 +77,7 @@
 									"    ",
 									"    const response = pm.response.json();",
 									"    const itemUid = pm.variables.get(\"itemUid\")",
-									"    pm.expect(response.itemUid).to.eq(itemUid)",
+									"    pm.expect(response.item_uuid).to.eq(itemUid)",
 									"})"
 								],
 								"type": "text/javascript"
@@ -107,7 +107,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "098f14ec-54ac-46e9-9b66-96512d5b0373",
+								"id": "540caf52-7464-4e17-94b3-4577dd09db12",
 								"exec": [
 									"pm.test(\"Request for warranty\", function() {",
 									"    pm.response.to.have.status(200)",
@@ -137,7 +137,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"reason\": \"It drowned\",\n    \"availableCount\": 2\n}",
+							"raw": "{\n    \"reason\": \"It drowned\",\n    \"avaliable_count\": 2\n}",
 							"options": {
 								"raw": {}
 							}
@@ -163,7 +163,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "887a344b-5e5f-4ac3-b51f-013e543470d9",
+								"id": "d207bd88-3ed1-4441-9870-5ff47de0d7d0",
 								"exec": [
 									""
 								],
@@ -173,7 +173,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "22df8818-9d19-43a2-8e7a-b65fae4969be",
+								"id": "5c5ad9d8-00d0-4b15-9109-504af0951623",
 								"exec": [
 									"pm.test(\"Stop warranty\", function() {",
 									"    pm.response.to.have.status(204)",
@@ -223,7 +223,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e985b15f-cb69-457c-aa90-0e9ee5fe56c7",
+								"id": "5b33f4fb-85ae-4344-a502-9640607ae1d4",
 								"exec": [
 									"pm.test(\"Take item from Warehouse\", function() {",
 									"    pm.response.to.have.status(200)",
@@ -231,12 +231,12 @@
 									"    ",
 									"    const response = pm.response.json();",
 									"    const orderUid = pm.variables.get(\"orderUid\")",
-									"    pm.expect(response.orderItemUid).to.exist",
-									"    pm.expect(response.orderUid).to.eq(orderUid)",
+									"    pm.expect(response.item_uuid).to.exist",
+									"    pm.expect(response.order_uuid).to.eq(orderUid)",
 									"    pm.expect(response.model).to.eq(\"Lego 8880\")",
 									"    pm.expect(response.size).to.eq(\"L\")",
 									"",
-									"    pm.environment.set(\"orderItemUid\", response.orderItemUid)",
+									"    pm.environment.set(\"orderItemUid\", response.item_uuid)",
 									"})"
 								],
 								"type": "text/javascript"
@@ -245,7 +245,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "f75e35cc-81c5-42e9-b745-27fbc06b7e3a",
+								"id": "02c497c1-157c-45ff-a1b7-ca6d3abac465",
 								"exec": [
 									"var uuid = require(\"uuid\");",
 									"postman.setEnvironmentVariable(\"orderUid\", uuid.v4());"
@@ -273,7 +273,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"orderUid\": \"{{orderUid}}\",\n    \"model\": \"Lego 8880\",\n    \"size\": \"L\"\n}",
+							"raw": "{\n    \"order_uuid\": \"{{orderUid}}\",\n    \"model\": \"Lego 8880\",\n    \"size\": \"L\"\n}",
 							"options": {
 								"raw": {}
 							}
@@ -298,7 +298,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "507b8f84-1f0a-453a-97f6-e5095457ce40",
+								"id": "df0c9c8e-6710-4917-aedb-99d3fa69527b",
 								"exec": [
 									"pm.test(\"Get item info\", function() {",
 									"    pm.response.to.have.status(200)",
@@ -315,7 +315,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "51d7fb7a-fbff-4128-b8d3-20ae12ecf29f",
+								"id": "0b7b9a9d-cc27-4775-b866-d58889d71e4d",
 								"exec": [
 									""
 								],
@@ -345,7 +345,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"orderUid\": \"{{orderUid}}\",\n    \"model\": \"Lego 8880\",\n    \"size\": \"L\"\n}",
+							"raw": "",
 							"options": {
 								"raw": {}
 							}
@@ -370,7 +370,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "e5e14d4c-8f99-4b00-859d-2f6dd844dcc5",
+								"id": "cff23c4c-e023-477c-ba79-408d5f6c86e1",
 								"exec": [
 									""
 								],
@@ -380,7 +380,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "ee5c29b0-d5ee-4535-a3a1-f04f5897966d",
+								"id": "c0d0d234-5d3d-4c96-bcb6-3b198eb72715",
 								"exec": [
 									"pm.test(\"Warranty request\", function() {",
 									"    pm.response.to.have.status(404)",
@@ -388,7 +388,7 @@
 									"    ",
 									"    const response = pm.response.json();",
 									"    const orderItemUid = pm.variables.get(\"orderItemUid\")",
-									"    pm.expect(response.message).to.eq(\"Warranty not found for itemUid '\" + orderItemUid + \"'\")",
+									"    pm.expect(response.detail).to.eq(\"Not found.\")",
 									"})"
 								],
 								"type": "text/javascript"
@@ -440,7 +440,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "d905dc9f-7c27-4fe2-9895-7e366d3ac0ad",
+								"id": "cded740c-d3be-495c-99dc-e23e2a31b436",
 								"exec": [
 									""
 								],
@@ -450,7 +450,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a123f1ae-3d1b-4423-96be-4f2c3b13b7af",
+								"id": "eb44fa43-9d1e-42dc-8374-0b20fbc0218e",
 								"exec": [
 									"pm.test(\"Return item\", function() {",
 									"    pm.response.to.have.status(204)",
@@ -503,7 +503,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "9eef0801-5d8e-465b-b9fc-f5e662d2db29",
+								"id": "26319c00-990d-4308-b05b-611d771d4e79",
 								"exec": [
 									"var uuid = require(\"uuid\");",
 									"postman.setEnvironmentVariable(\"userUid\", uuid.v4());"
@@ -514,15 +514,15 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "b912da8c-5d85-4b47-88bd-3fbed7ed8cf7",
+								"id": "470c8cbc-210d-484e-9e78-ab8eed68d002",
 								"exec": [
 									"pm.test(\"Create order\", function() {",
 									"    pm.response.to.have.status(200)",
 									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");",
 									"",
 									"    const response = pm.response.json();",
-									"    pm.expect(response.orderUid).to.not.empty",
-									"    pm.environment.set(\"orderUid\", response.orderUid)",
+									"    pm.expect(response.order_uuid).to.not.empty",
+									"    pm.environment.set(\"orderUid\", response.order_uuid)",
 									"})"
 								],
 								"type": "text/javascript"
@@ -562,7 +562,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "a5c68be8-7e68-4f17-a23c-a818f63bd5a7",
+								"id": "729c147a-b125-457d-8169-878d5ab85b8e",
 								"exec": [
 									""
 								],
@@ -572,15 +572,15 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "e773c917-4e80-4ab0-a9e4-e3fbf2048d32",
+								"id": "c8c41ed3-ce0e-4c21-9fb2-57aa0b6215af",
 								"exec": [
 									"pm.test(\"User order info\", function() {",
 									"    pm.response.to.have.status(200)",
 									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");",
 									"    const response = pm.response.json();",
 									"    const orderUid = pm.variables.get(\"orderUid\")",
-									"    pm.expect(response.orderUid).to.eq(orderUid)",
-									"    pm.expect(response.itemUid).to.not.empty",
+									"    pm.expect(response.uuid).to.eq(orderUid)",
+									"    pm.expect(response.item_uuid).to.not.empty",
 									"    pm.expect(response.status).to.eq(\"PAID\")",
 									"})"
 								],
@@ -618,7 +618,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "60dd2c68-42c6-4e8f-a154-fa1343c01218",
+								"id": "ad9c68d7-4f27-4c49-b0b7-c0db4cdaa7ed",
 								"exec": [
 									""
 								],
@@ -628,7 +628,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "6b040698-4cb3-4736-b164-e31323e6a2d8",
+								"id": "94910d66-3821-4b22-9182-3f2fc6715edd",
 								"exec": [
 									"pm.test(\"User orders info\", function() {",
 									"    pm.response.to.have.status(200)",
@@ -636,8 +636,8 @@
 									"    const response = pm.response.json();",
 									"    const orderUid = pm.variables.get(\"orderUid\")",
 									"    pm.expect(response.length).to.eq(1)",
-									"    pm.expect(response[0].orderUid).to.eq(orderUid)",
-									"    pm.expect(response[0].itemUid).to.not.empty",
+									"    pm.expect(response[0].uuid).to.eq(orderUid)",
+									"    pm.expect(response[0].item_uuid).to.not.empty",
 									"    pm.expect(response[0].status).to.eq(\"PAID\")",
 									"})"
 								],
@@ -674,7 +674,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "b675281e-97e6-41dd-9d00-ab4d4e080678",
+								"id": "43bcd4c6-48e3-4999-a82f-01c3d46856d3",
 								"exec": [
 									""
 								],
@@ -684,13 +684,13 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "674bfeb7-5647-490d-9cbb-0595f36fe85c",
+								"id": "71121bed-5cd6-4612-b1b7-21a7d941f311",
 								"exec": [
 									"pm.test(\"Warranty request\", function() {",
 									"    pm.response.to.have.status(200)",
 									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json\");",
 									"    const response = pm.response.json();",
-									"    pm.expect(response.warrantyDate).to.not.empty",
+									"    pm.expect(response.date).to.not.empty",
 									"    pm.expect(response.decision).to.eq(\"RETURN\")",
 									"})"
 								],
@@ -742,7 +742,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "431fc5a1-4fe2-47cc-ad53-80ebe4e7a7a8",
+								"id": "71615eaa-93d3-492f-ab3c-b45ca95d53f8",
 								"exec": [
 									""
 								],
@@ -752,7 +752,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "8a6a6d02-65e6-4c7a-b7e2-c6555d6846ba",
+								"id": "0e6d71e4-c771-49c6-8a72-63353ca4631c",
 								"exec": [
 									"pm.test(\"Return order\", function() {",
 									"    pm.response.to.have.status(204)",
@@ -790,7 +790,7 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"id": "54f08b1d-13ce-4835-8a7f-51c163af2337",
+						"id": "b4ab6a1a-db9c-41f4-8906-075e9aae723d",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -800,7 +800,7 @@
 				{
 					"listen": "test",
 					"script": {
-						"id": "82b57db4-ab43-43ca-bec6-f2f1512f0948",
+						"id": "3c4ceb09-5206-4c01-b722-b54fe4c4e6d8",
 						"type": "text/javascript",
 						"exec": [
 							""
@@ -819,7 +819,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "351d3d5b-ec39-44fa-a129-1c5e27b557b6",
+								"id": "fb2accbf-e299-4465-abf0-a806a09f80dc",
 								"exec": [
 									""
 								],
@@ -829,7 +829,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "03b1d327-32b2-4e70-8e1b-a02c06296af5",
+								"id": "4772b218-51b1-47ea-ac97-6c29522b8d41",
 								"exec": [
 									"pm.test(\"Purchase item\", function() {",
 									"    pm.response.to.have.status(201)",
@@ -877,7 +877,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "80a7b373-4dfd-4d68-b3cd-4cbe72aa94dc",
+								"id": "99220d66-b451-47b7-97e6-d2c366b2f919",
 								"exec": [
 									""
 								],
@@ -887,7 +887,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "a2de3fd5-4955-4221-a560-b6de068a32a1",
+								"id": "d9c549d2-ebdd-44a6-840d-6a94b47c2989",
 								"exec": [
 									"pm.test(\"User order info\", function() {",
 									"    pm.response.to.have.status(200)",
@@ -896,12 +896,12 @@
 									"    const response = pm.response.json();",
 									"    const orderUid = pm.variables.get(\"orderUid\")",
 									"    ",
-									"    pm.expect(response.orderUid).to.eq(orderUid)",
+									"    pm.expect(response.uuid).to.eq(orderUid)",
 									"    pm.expect(response.date).to.not.empty",
 									"    pm.expect(response.model).to.eq(\"Lego 8880\")",
 									"    pm.expect(response.size).to.eq(\"L\")",
-									"    pm.expect(response.warrantyDate).to.not.empty",
-									"    pm.expect(response.warrantyStatus).to.eq(\"ON_WARRANTY\")",
+									"    pm.expect(response.warranty_date).to.not.empty",
+									"    pm.expect(response.warranty_status).to.eq(\"ON_WARRANTY\")",
 									"})"
 								],
 								"type": "text/javascript"
@@ -938,7 +938,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "9a4a807f-aa2a-4e03-b6de-4486833d2e95",
+								"id": "4899ac08-89da-4a65-9cdc-5d03d54a0d72",
 								"exec": [
 									""
 								],
@@ -948,7 +948,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "22d6af19-ea59-4120-8ef0-1a934a94f754",
+								"id": "8537f9f6-5c88-4645-8e15-0cb77f096974",
 								"exec": [
 									"pm.test(\"User orders\", function() {",
 									"    pm.response.to.have.status(200)",
@@ -992,7 +992,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "b1265b3e-d89b-4ac7-bb4c-d7460e46ab4b",
+								"id": "b6c9a46b-b99e-4d6e-ae83-3a98fb5a81f9",
 								"exec": [
 									""
 								],
@@ -1002,7 +1002,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "cdc8e1b4-ce31-44f2-85b1-25cc95c5d424",
+								"id": "11e96097-8826-4d5e-8b83-014498bbde12",
 								"exec": [
 									"pm.test(\"Warranty request\", function() {",
 									"    pm.response.to.have.status(200)",
@@ -1011,8 +1011,7 @@
 									"    const response = pm.response.json();",
 									"    const orderUid = pm.variables.get(\"orderUid\")",
 									"    ",
-									"    pm.expect(response.orderUid).to.eq(orderUid)",
-									"    pm.expect(response.warrantyDate).to.not.empty",
+									"    pm.expect(response.date).to.not.empty",
 									"    pm.expect(response.decision).to.eq(\"RETURN\")",
 									"})"
 								],
@@ -1065,7 +1064,7 @@
 						{
 							"listen": "prerequest",
 							"script": {
-								"id": "f3c85975-331a-47e9-8ae0-9b5456feb8ce",
+								"id": "eb38b7ef-e9ed-4860-83eb-735224ed68e2",
 								"exec": [
 									""
 								],
@@ -1075,7 +1074,7 @@
 						{
 							"listen": "test",
 							"script": {
-								"id": "363474c7-7c9b-4696-b10a-e857789be766",
+								"id": "82ebe385-aea9-4fb1-a4ef-8d3abf2f951a",
 								"exec": [
 									"pm.test(\"Return order\", function() {",
 									"    pm.response.to.have.status(204)",

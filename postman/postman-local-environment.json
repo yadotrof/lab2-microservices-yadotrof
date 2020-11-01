@@ -1,25 +1,25 @@
 {
-	"id": "a8bbf394-758b-4fcb-8cc7-7c4dabeecaa6",
+	"id": "1fe8165e-db69-4c3e-a863-6780bfad1656",
 	"name": "[local] Services",
 	"values": [
 		{
 			"key": "storeUrl",
-			"value": "http://localhost:8480",
-			"enabled": true
-		},
-		{
-			"key": "warrantyUrl",
-			"value": "http://localhost:8180",
+			"value": "http://localhost:8000",
 			"enabled": true
 		},
 		{
 			"key": "orderUrl",
-			"value": "http://localhost:8380",
+			"value": "http://localhost:8001",
 			"enabled": true
 		},
 		{
 			"key": "warehouseUrl",
-			"value": "http://localhost:8280",
+			"value": "http://localhost:8002",
+			"enabled": true
+		},
+		{
+			"key": "warrantyUrl",
+			"value": "http://localhost:8003",
 			"enabled": true
 		},
 		{
@@ -29,7 +29,7 @@
 		},
 		{
 			"key": "mainUserUid",
-			"value": "6D2CB5A0-943C-4B96-9AA6-89EAC7BDFD2B",
+			"value": "83a18097-3544-4ab7-95bb-62d35ff62d9f",
 			"enabled": true
 		},
 		{
@@ -54,6 +54,6 @@
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2020-10-19T12:00:39.174Z",
+	"_postman_exported_at": "2020-11-01T19:38:20.753Z",
 	"_postman_exported_using": "Postman/7.34.0"
 }

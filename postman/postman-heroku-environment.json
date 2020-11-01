@@ -1,25 +1,25 @@
 {
-	"id": "c83d07a0-8fec-4ee2-ae15-d7a728f94cab",
+	"id": "3192a999-8eda-4e27-a0c4-8a5a93fe4bad",
 	"name": "[heroku] Services",
 	"values": [
 		{
 			"key": "storeUrl",
-			"value": "https://store-service-app.herokuapp.com",
-			"enabled": true
-		},
-		{
-			"key": "warrantyUrl",
-			"value": "https://warranty-service-app.herokuapp.com",
+			"value": "https://shmarov-rsoi-lab2-store.herokuapp.com",
 			"enabled": true
 		},
 		{
 			"key": "orderUrl",
-			"value": "https://order-service-app.herokuapp.com",
+			"value": "https://shmarov-rsoi-lab2-order.herokuapp.com",
 			"enabled": true
 		},
 		{
 			"key": "warehouseUrl",
-			"value": "https://warehouse-service-app.herokuapp.com",
+			"value": "https://shmarov-rsoi-lab2-warehouse.herokuapp.com",
+			"enabled": true
+		},
+		{
+			"key": "warrantyUrl",
+			"value": "https://shmarov-rsoi-lab2-warranty.herokuapp.com",
 			"enabled": true
 		},
 		{
@@ -29,31 +29,31 @@
 		},
 		{
 			"key": "mainUserUid",
-			"value": "6D2CB5A0-943C-4B96-9AA6-89EAC7BDFD2B",
+			"value": "66c559cf-89d3-4089-87cd-c65c04fd33e5",
 			"enabled": true
 		},
 		{
 			"key": "itemUid",
-			"value": "a391de30-ee10-4ebf-8fdb-966dfa44da1c",
+			"value": "752d8aa1-1b1f-4c3c-8a05-ff02e08de399",
 			"enabled": true
 		},
 		{
 			"key": "orderUid",
-			"value": "7139cf57-3910-4d21-bf8a-7d0108e20d85",
+			"value": "0307da11-7367-4d0c-aa69-5246ea8013bd",
 			"enabled": true
 		},
 		{
 			"key": "orderItemUid",
-			"value": "955f51fe-68d5-4895-b9ee-fc9ce16a31bf",
+			"value": "3fdfe916-fc69-49df-a1d0-9762925bc2cf",
 			"enabled": true
 		},
 		{
 			"key": "userUid",
-			"value": "beabb854-52da-46ab-8bed-eef5f96d7da9",
+			"value": "b39c3fbb-0f0a-4635-8957-86646721cb7b",
 			"enabled": true
 		}
 	],
 	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2020-10-19T12:00:47.399Z",
+	"_postman_exported_at": "2020-11-01T19:38:24.889Z",
 	"_postman_exported_using": "Postman/7.34.0"
 }
