@@ -44,8 +44,9 @@ def order_actions(request, uuid):
         """
         order = get_object_or_404(Order, uuid=uuid)
         try:
+            requests.delete(f'http://warranty:8003/api/v1/warranty/{order.item_uuid}')
             res = requests.delete(f'http://warehouse:8002/api/v1/warehouse/{order.item_uuid}')
-            requests.post(f'http://warranty:8003/api/v1/warranty/{order.item_uuid}')
+            order.delete()
         except:
             return Response({'message': 'External request failed'}, status.HTTP_422_UNPROCESSABLE_ENTITY)
         if res.status_code == 204:
