@@ -73,7 +73,7 @@ def request_warranty(request, item_uuid):
     seriallizer = WarrantyRequestSerializer(data=request.data)
     if seriallizer.is_valid():
         object = get_object_or_404(OrderItem,
-                                item_uuid=item_uuid)
+                                   item_uuid=item_uuid)
         data = seriallizer.validated_data
         data['avaliable_count'] = object.item.available_count
         res = requests.post(f'http://warranty:8003/api/v1/warranty/{item_uuid}/warranty',
