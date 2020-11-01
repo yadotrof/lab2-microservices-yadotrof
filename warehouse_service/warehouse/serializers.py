@@ -18,7 +18,7 @@ ITEM_SIZE_CHOICES = [
 
 class OrderRequestSerializer(serializers.Serializer):
     model = serializers.CharField(max_length=255, required=True)
-    size = serializers.ChoiceField(choices=ITEM_SIZE_CHOICES,required=True)
+    size = serializers.ChoiceField(choices=ITEM_SIZE_CHOICES, required=True)
     order_uuid = serializers.UUIDField(required=True)
 
 

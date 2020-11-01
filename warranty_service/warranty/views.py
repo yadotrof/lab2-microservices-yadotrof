@@ -10,6 +10,7 @@ from .models import Warranty
 from .serializers import WarrantySerializer
 from .serializers import WarrantyRequestSerializer
 
+
 class WarrantyActions(APIView):
     def get(self, request, item_uuid, format=None):
         """

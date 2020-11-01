@@ -25,16 +25,16 @@ class OrderActions(APIView):
         serializer = RequestItemSerializer(data=request.data)
         if serializer.is_valid():
             order_uuid = uuid4()
-            res = requests.post(f'{settings.WAREHOUSE_URL}api/v1/warehouse/', 
+            res = requests.post(f'{settings.WAREHOUSE_URL}api/v1/warehouse/',
                                 data={'model': serializer.validated_data['model'],
-                                        'size': serializer.validated_data['size'],
-                                        'order_uuid': order_uuid})
+                                      'size': serializer.validated_data['size'],
+                                      'order_uuid': order_uuid})
             if res.status_code == 200:
                 data = res.json()
                 requests.post(f'{settings.WARRANTY_URL}api/v1/warranty/{data["item_uuid"]}')
                 Order.objects.create(uuid=data['order_uuid'],
-                                     item_uuid = data['item_uuid'],
-                                     user_uuid = uuid)
+                                     item_uuid=data['item_uuid'],
+                                     user_uuid=uuid)
                 return Response({'order_uuid': order_uuid}, status.HTTP_200_OK)
             if res.status_code == 409:
                 return Response({'message': 'Item not avaliable'}, status.HTTP_409_CONFLICT)
@@ -81,5 +81,5 @@ class Warranty(APIView):
                                 data=data)
             return Response(res.json(), res.status_code)
         else:
-            return Response({'message': f'Bad request'},
+            return Response({'message': 'Bad request'},
                             status=status.HTTP_400_BAD_REQUEST)

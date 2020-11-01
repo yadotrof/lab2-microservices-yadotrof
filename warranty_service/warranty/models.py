@@ -5,6 +5,7 @@ WARRANTY_STATUS_CHOICES = [
     ('USE_WARRANTY', 'Use warranty'),
     ('REMOVED_FROM_WARRANTY', 'Removed from warranty')]
 
+
 class Warranty(models.Model):
     comment = models.TextField()
     status = models.CharField(max_length=25, choices=WARRANTY_STATUS_CHOICES)
