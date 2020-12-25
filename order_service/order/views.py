@@ -40,6 +40,11 @@ class OrderActions(APIView):
                     external_call(requests.post, 
                                   f'{settings.WARRANTY_URL}api/v1/warranty/{data["item_uuid"]}')
                 except ExternalCallException as e:
+                    try:
+                        external_call(requests.delete,
+                                    f'{settings.WAREHOUSE_URL}api/v1/warehouse/{data['item_uuid']}')
+                        except ExternalCallException as e:
+                            pass
                     return Response({'message': str(e)}, status.HTTP_400_BAD_REQUEST)
                 Order.objects.create(uuid=data['order_uuid'],
                                      item_uuid=data['item_uuid'],
@@ -65,6 +70,11 @@ class OrderActions(APIView):
             res = external_call(requests.delete,
                                 f'{settings.WAREHOUSE_URL}api/v1/warehouse/{order.item_uuid}')
         except ExternalCallException as e:
+            try:
+                external_call(requests.post, 
+                              f'{settings.WARRANTY_URL}api/v1/warranty/{order.item_uuid}')
+            except ExternalCallException as e:
+                pass
             return Response({'message': str(e)}, status.HTTP_400_BAD_REQUEST)
         order.delete()
         if res.status_code == 203:
