@@ -13,6 +13,7 @@ from .serializers import ItemSerializer
 from .serializers import OrderRequestSerializer
 from .serializers import OrderItemSerializer
 from .serializers import WarrantyRequestSerializer
+from .externalcall import external_call, ExternalCallException
 
 
 class ItemDetail(APIView):
@@ -77,8 +78,12 @@ class Warranty(APIView):
                                        item_uuid=item_uuid)
             data = seriallizer.validated_data
             data['avaliable_count'] = object.item.available_count
-            res = requests.post(f'{settings.WARRANTY_URL}api/v1/warranty/{item_uuid}/warranty',
-                                data=data)
+            try:
+                res = external_call(requests.post,
+                                    f'{settings.WARRANTY_URL}api/v1/warranty/{item_uuid}/warranty',
+                                    data=data)
+            except ExternalCallException as e:
+                return Response({'message': str(e)}, status.HTTP_400_BAD_REQUEST)
             return Response(res.json(), res.status_code)
         return Response({'message': 'Bad request'},
                         status=status.HTTP_400_BAD_REQUEST)

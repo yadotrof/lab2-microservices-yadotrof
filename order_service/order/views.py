@@ -8,6 +8,7 @@ from django.conf import settings
 import requests
 from uuid import uuid4
 
+from .externalcall import external_call, ExternalCallException
 
 class OrderActions(APIView):
     def get(self, request, uuid, format=None):
@@ -26,24 +27,27 @@ class OrderActions(APIView):
         if serializer.is_valid():
             order_uuid = uuid4()
             try:
-                res = requests.post(f'{settings.WAREHOUSE_URL}api/v1/warehouse/',
+                res = external_call(requests.post,
+                                    f'{settings.WAREHOUSE_URL}api/v1/warehouse/',
                                     data={'model': serializer.validated_data['model'],
                                         'size': serializer.validated_data['size'],
                                         'order_uuid': order_uuid})
-            except requests.exceptions.RequestException:
-                return Response({'message': 'Warehouse service is not available'}, status.HTTP_400_BAD_REQUEST)
+            except ExternalCallException as e:
+                return Response({'message': str(e)}, status.HTTP_400_BAD_REQUEST)
             if res.status_code == 200:
                 data = res.json()
                 try:
-                    requests.post(f'{settings.WARRANTY_URL}api/v1/warranty/{data["item_uuid"]}')
-                except requests.exceptions.RequestException:
-                    return Response({'message': 'Warranty service is not available'}, status.HTTP_400_BAD_REQUEST)
+                    external_call(requests.post, 
+                                  f'{settings.WARRANTY_URL}api/v1/warranty/{data["item_uuid"]}')
+                except ExternalCallException as e:
+                    return Response({'message': str(e)}, status.HTTP_400_BAD_REQUEST)
                 Order.objects.create(uuid=data['order_uuid'],
                                      item_uuid=data['item_uuid'],
                                      user_uuid=uuid)
                 return Response({'order_uuid': order_uuid}, status.HTTP_200_OK)
             if res.status_code == 409:
                 return Response({'message': 'Item not avaliable'}, status.HTTP_409_CONFLICT)
+            print(res)
         return Response({'message': 'Bad request'},
                         status=status.HTTP_400_BAD_REQUEST)
 
@@ -53,13 +57,15 @@ class OrderActions(APIView):
         """
         order = get_object_or_404(Order, uuid=uuid)
         try:
-            requests.delete(f'{settings.WARRANTY_URL}api/v1/warranty/{order.item_uuid}')
-        except requests.exceptions.RequestException:
-            return Response({'message': 'Warranty service is not available'}, status.HTTP_400_BAD_REQUEST)
+            external_call(requests.delete,
+                          f'{settings.WARRANTY_URL}api/v1/warranty/{order.item_uuid}')
+        except ExternalCallException as e:
+            return Response({'message': str(e)}, status.HTTP_400_BAD_REQUEST)
         try:
-            res = requests.delete(f'{settings.WAREHOUSE_URL}api/v1/warehouse/{order.item_uuid}')
-        except requests.exceptions.RequestException:
-            return Response({'message': 'Warehouse service is not available'}, status.HTTP_400_BAD_REQUEST)
+            res = external_call(requests.delete,
+                                f'{settings.WAREHOUSE_URL}api/v1/warehouse/{order.item_uuid}')
+        except ExternalCallException as e:
+            return Response({'message': str(e)}, status.HTTP_400_BAD_REQUEST)
         order.delete()
         if res.status_code == 203:
             return Response({'message': 'Order returned'}, status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
@@ -89,10 +95,11 @@ class Warranty(APIView):
             object = get_object_or_404(Order, uuid=order_uuid)
             data = serializer.validated_data
             try:
-                res = requests.post(f'{settings.WAREHOUSE_URL}api/v1/warehouse/{object.item_uuid}/warranty',
+                res = external_call(requests.post,
+                                    f'{settings.WAREHOUSE_URL}api/v1/warehouse/{object.item_uuid}/warranty',
                                     data=data)
-            except requests.exceptions.RequestException:
-                return Response({'message': 'Warehouse service is not available'}, status.HTTP_400_BAD_REQUEST)
+            except ExternalCallException as e:
+                return Response({'message': str(e)}, status.HTTP_400_BAD_REQUEST)
             return Response(res.json(), res.status_code)
         return Response({'message': 'Bad request'},
                         status=status.HTTP_400_BAD_REQUEST)
