@@ -51,20 +51,19 @@ class OrderList(APIView):
             try:
                 res = external_call(requests.get,
                                     f'{settings.WAREHOUSE_URL}api/v1/warehouse/{order["item_uuid"]}')
+                item = res.json()
+                order['model'] = item['model']
+                order['size'] = item['size']
             except ExternalCallException as e:
-                return Response({'message': str(e)}, status.HTTP_400_BAD_REQUEST)
-            item = res.json()
-            order['model'] = item['model']
-            order['size'] = item['size']
+                pass
             try:
                 res = external_call(requests.get,
                                     f'{settings.WARRANTY_URL}api/v1/warranty/{order["item_uuid"]}')
+                warranty = res.json()
+                order['warranty_date'] = warranty['date']
+                order['warranty_status'] = warranty['status']
             except ExternalCallException as e:
-                return Response({'message': str(e)}, status.HTTP_400_BAD_REQUEST)
-            warranty = res.json()
-            print(warranty.keys(), warranty)
-            order['warranty_date'] = warranty['date']
-            order['warranty_status'] = warranty['status']
+                pass
         return Response(orders, status.HTTP_200_OK)
 
 
@@ -83,19 +82,19 @@ class OrderDetail(APIView):
         try:
             res = external_call(requests.get,
                                 f'{settings.WAREHOUSE_URL}api/v1/warehouse/{order["item_uuid"]}')
+            item = res.json()
+            order['model'] = item['model']
+            order['size'] = item['size']
         except ExternalCallException as e:
-            return Response({'message': str(e)}, status.HTTP_400_BAD_REQUEST)
-        item = res.json()
-        order['model'] = item['model']
-        order['size'] = item['size']
+            pass
         try:
             res = external_call(requests.get,
                                 f'{settings.WARRANTY_URL}api/v1/warranty/{order["item_uuid"]}')
+            warranty = res.json()
+            order['warranty_date'] = warranty['date']
+            order['warranty_status'] = warranty['status']
         except ExternalCallException as e:
-            return Response({'message': str(e)}, status.HTTP_400_BAD_REQUEST)
-        warranty = res.json()
-        order['warranty_date'] = warranty['date']
-        order['warranty_status'] = warranty['status']
+            pass
         return Response(order, status.HTTP_200_OK)
 
 
