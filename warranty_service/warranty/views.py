@@ -60,6 +60,5 @@ class RequestWarranty(APIView):
                 object.save()
             return Response({'decision': result, 'date': object.date},
                             status.HTTP_200_OK)
-        else:
-            return Response({'message': 'Bad request'},
-                            status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'Bad request'},
+                        status=status.HTTP_400_BAD_REQUEST)

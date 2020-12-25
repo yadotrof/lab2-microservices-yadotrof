@@ -80,6 +80,5 @@ class Warranty(APIView):
             res = requests.post(f'{settings.WARRANTY_URL}api/v1/warranty/{item_uuid}/warranty',
                                 data=data)
             return Response(res.json(), res.status_code)
-        else:
-            return Response({'message': 'Bad request'},
-                            status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'Bad request'},
+                        status=status.HTTP_400_BAD_REQUEST)

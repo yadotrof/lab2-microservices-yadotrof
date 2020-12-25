@@ -29,9 +29,8 @@ class Purchase(APIView):
             if res.status_code == 200:
                 resp['Location'] = f'{settings.ORDER_URL}api/v1/orders/{user_uuid}/{res.json()["order_uuid"]}'
             return resp
-        else:
-            return Response({'message': 'Bad request'},
-                            status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'Bad request'},
+                        status=status.HTTP_400_BAD_REQUEST)
 
 
 class OrderList(APIView):
@@ -106,9 +105,8 @@ class Warranty(APIView):
             except requests.exceptions.RequestException:
                 return Response({'message': 'Order service is not available'}, status.HTTP_400_BAD_REQUEST)
             return Response(res.json(), res.status_code)
-        else:
-            return Response({'message': 'Bad request'},
-                            status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'Bad request'},
+                        status=status.HTTP_400_BAD_REQUEST)
 
 
 class Refund(APIView):

@@ -44,6 +44,8 @@ class OrderActions(APIView):
                 return Response({'order_uuid': order_uuid}, status.HTTP_200_OK)
             if res.status_code == 409:
                 return Response({'message': 'Item not avaliable'}, status.HTTP_409_CONFLICT)
+        return Response({'message': 'Bad request'},
+                        status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, uuid, format=None):
         """
@@ -92,6 +94,5 @@ class Warranty(APIView):
             except requests.exceptions.RequestException:
                 return Response({'message': 'Warehouse service is not available'}, status.HTTP_400_BAD_REQUEST)
             return Response(res.json(), res.status_code)
-        else:
-            return Response({'message': 'Bad request'},
-                            status=status.HTTP_400_BAD_REQUEST)
+        return Response({'message': 'Bad request'},
+                        status=status.HTTP_400_BAD_REQUEST)
