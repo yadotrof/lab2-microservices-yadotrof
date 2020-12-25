@@ -25,13 +25,19 @@ class OrderActions(APIView):
         serializer = RequestItemSerializer(data=request.data)
         if serializer.is_valid():
             order_uuid = uuid4()
-            res = requests.post(f'{settings.WAREHOUSE_URL}api/v1/warehouse/',
-                                data={'model': serializer.validated_data['model'],
-                                      'size': serializer.validated_data['size'],
-                                      'order_uuid': order_uuid})
+            try:
+                res = requests.post(f'{settings.WAREHOUSE_URL}api/v1/warehouse/',
+                                    data={'model': serializer.validated_data['model'],
+                                        'size': serializer.validated_data['size'],
+                                        'order_uuid': order_uuid})
+            except requests.exceptions.RequestException:
+                return Response({'message': 'Warehouse service is not available'}, status.HTTP_400_BAD_REQUEST)
             if res.status_code == 200:
                 data = res.json()
-                requests.post(f'{settings.WARRANTY_URL}api/v1/warranty/{data["item_uuid"]}')
+                try:
+                    requests.post(f'{settings.WARRANTY_URL}api/v1/warranty/{data["item_uuid"]}')
+                except requests.exceptions.RequestException:
+                    return Response({'message': 'Warranty service is not available'}, status.HTTP_400_BAD_REQUEST)
                 Order.objects.create(uuid=data['order_uuid'],
                                      item_uuid=data['item_uuid'],
                                      user_uuid=uuid)
@@ -46,10 +52,13 @@ class OrderActions(APIView):
         order = get_object_or_404(Order, uuid=uuid)
         try:
             requests.delete(f'{settings.WARRANTY_URL}api/v1/warranty/{order.item_uuid}')
+        except requests.exceptions.RequestException:
+            return Response({'message': 'Warranty service is not available'}, status.HTTP_400_BAD_REQUEST)
+        try:
             res = requests.delete(f'{settings.WAREHOUSE_URL}api/v1/warehouse/{order.item_uuid}')
-            order.delete()
-        except:
-            return Response({'message': 'External request failed'}, status.HTTP_422_UNPROCESSABLE_ENTITY)
+        except requests.exceptions.RequestException:
+            return Response({'message': 'Warehouse service is not available'}, status.HTTP_400_BAD_REQUEST)
+        order.delete()
         if res.status_code == 203:
             return Response({'message': 'Order returned'}, status.HTTP_203_NON_AUTHORITATIVE_INFORMATION)
         if res.status_code == 404:
@@ -77,8 +86,11 @@ class Warranty(APIView):
         if serializer.is_valid():
             object = get_object_or_404(Order, uuid=order_uuid)
             data = serializer.validated_data
-            res = requests.post(f'{settings.WAREHOUSE_URL}api/v1/warehouse/{object.item_uuid}/warranty',
-                                data=data)
+            try:
+                res = requests.post(f'{settings.WAREHOUSE_URL}api/v1/warehouse/{object.item_uuid}/warranty',
+                                    data=data)
+            except requests.exceptions.RequestException:
+                return Response({'message': 'Warehouse service is not available'}, status.HTTP_400_BAD_REQUEST)
             return Response(res.json(), res.status_code)
         else:
             return Response({'message': 'Bad request'},

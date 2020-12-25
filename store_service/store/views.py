@@ -19,9 +19,12 @@ class Purchase(APIView):
         get_object_or_404(User, uuid=user_uuid)
         serializer = RequestItemSerializer(data=request.data)
         if serializer.is_valid():
-            res = requests.post(f'{settings.ORDER_URL}api/v1/orders/{user_uuid}',
-                                data={'model': serializer.validated_data['model'],
-                                      'size': serializer.validated_data['size']})
+            try:
+                res = requests.post(f'{settings.ORDER_URL}api/v1/orders/{user_uuid}',
+                                    data={'model': serializer.validated_data['model'],
+                                        'size': serializer.validated_data['size']})
+            except requests.exceptions.RequestException:
+                return Response({'message': 'Order service is not available'}, status.HTTP_400_BAD_REQUEST)
             resp = Response(res.json(), 201 if res.status_code == 200 else res.status_code)
             if res.status_code == 200:
                 resp['Location'] = f'{settings.ORDER_URL}api/v1/orders/{user_uuid}/{res.json()["order_uuid"]}'
@@ -37,14 +40,23 @@ class OrderList(APIView):
         Get user`s orders.
         """
         get_object_or_404(User, uuid=user_uuid)
-        res = requests.get(f'{settings.ORDER_URL}api/v1/orders/{user_uuid}')
+        try:
+            res = requests.get(f'{settings.ORDER_URL}api/v1/orders/{user_uuid}')
+        except requests.exceptions.RequestException:
+            return Response({'message': 'Order service is not available'}, status.HTTP_400_BAD_REQUEST)
         orders = res.json()
         for order in orders:
-            res = requests.get(f'{settings.WAREHOUSE_URL}api/v1/warehouse/{order["item_uuid"]}')
+            try:
+                res = requests.get(f'{settings.WAREHOUSE_URL}api/v1/warehouse/{order["item_uuid"]}')
+            except requests.exceptions.RequestException:
+                return Response({'message': 'Warehouse service is not available'}, status.HTTP_400_BAD_REQUEST)
             item = res.json()
             order['model'] = item['model']
             order['size'] = item['size']
-            res = requests.get(f'{settings.WARRANTY_URL}api/v1/warranty/{order["item_uuid"]}')
+            try:
+                res = requests.get(f'{settings.WARRANTY_URL}api/v1/warranty/{order["item_uuid"]}')
+            except requests.exceptions.RequestException:
+                return Response({'message': 'Warranty service is not available'}, status.HTTP_400_BAD_REQUEST)
             warranty = res.json()
             print(warranty.keys(), warranty)
             order['warranty_date'] = warranty['date']
@@ -58,13 +70,22 @@ class OrderDetail(APIView):
         Get order detail.
         """
         get_object_or_404(User, uuid=user_uuid)
-        res = requests.get(f'{settings.ORDER_URL}api/v1/orders/{user_uuid}/{order_uuid}')
+        try:
+            res = requests.get(f'{settings.ORDER_URL}api/v1/orders/{user_uuid}/{order_uuid}')
+        except requests.exceptions.RequestException:
+            return Response({'message': 'Order service is not available'}, status.HTTP_400_BAD_REQUEST)
         order = res.json()
-        res = requests.get(f'{settings.WAREHOUSE_URL}api/v1/warehouse/{order["item_uuid"]}')
+        try:
+            res = requests.get(f'{settings.WAREHOUSE_URL}api/v1/warehouse/{order["item_uuid"]}')
+        except requests.exceptions.RequestException:
+            return Response({'message': 'Warehouse service is not available'}, status.HTTP_400_BAD_REQUEST)
         item = res.json()
         order['model'] = item['model']
         order['size'] = item['size']
-        res = requests.get(f'{settings.WARRANTY_URL}api/v1/warranty/{order["item_uuid"]}')
+        try:
+            res = requests.get(f'{settings.WARRANTY_URL}api/v1/warranty/{order["item_uuid"]}')
+        except requests.exceptions.RequestException:
+            return Response({'message': 'Warranty service is not available'}, status.HTTP_400_BAD_REQUEST)
         warranty = res.json()
         order['warranty_date'] = warranty['date']
         order['warranty_status'] = warranty['status']
@@ -79,8 +100,11 @@ class Warranty(APIView):
         get_object_or_404(User, uuid=user_uuid)
         seriallizer = WarrantyRequestSerializer(data=request.data)
         if seriallizer.is_valid():
-            res = requests.post(f'{settings.ORDER_URL}api/v1/orders/{order_uuid}/warranty',
-                                data=seriallizer.validated_data)
+            try:
+                res = requests.post(f'{settings.ORDER_URL}api/v1/orders/{order_uuid}/warranty',
+                                    data=seriallizer.validated_data)
+            except requests.exceptions.RequestException:
+                return Response({'message': 'Order service is not available'}, status.HTTP_400_BAD_REQUEST)
             return Response(res.json(), res.status_code)
         else:
             return Response({'message': 'Bad request'},
@@ -93,5 +117,8 @@ class Refund(APIView):
         Request refund.
         """
         get_object_or_404(User, uuid=user_uuid)
-        res = requests.delete(f'{settings.ORDER_URL}api/v1/orders/{order_uuid}')
+        try:
+            res = requests.delete(f'{settings.ORDER_URL}api/v1/orders/{order_uuid}')
+        except requests.exceptions.RequestException:
+            return Response({'message': 'Order service is not available'}, status.HTTP_400_BAD_REQUEST)
         return Response(res.json(), res.status_code)
