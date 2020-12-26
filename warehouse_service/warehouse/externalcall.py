@@ -31,7 +31,6 @@ def health_warranty():
         print(r, f'{settings.WARRANTY_URL}ht')
         return True
     except Exception as e:
-        print(e)
         return False
 
 
