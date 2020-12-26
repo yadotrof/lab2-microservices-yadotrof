@@ -37,3 +37,21 @@ services:
       - 8003:8003
     env_file:
       - ./.env.dev
+
+  rabbitmq:
+    image: rabbitmq:3-management-alpine
+    volumes:
+        - ./.docker/rabbitmq/etc/:/etc/rabbitmq/
+        - ./.docker/rabbitmq/data/:/var/lib/rabbitmq/
+        - ./.docker/rabbitmq/logs/:/var/log/rabbitmq/
+    ports:
+        - 5672:5672
+        - 15672:15672
+
+  celery:
+    build: ./warehouse_service
+    command: celery -A warehouse_service worker -l info
+    volumes:
+      - ./warehouse_service/:/usr/src/app/
+    env_file:
+      - ./.env.dev

@@ -10,3 +10,4 @@ requests
 django-health-check
 uritemplate
 pyyaml
+Celery

@@ -14,6 +14,7 @@ from .serializers import OrderRequestSerializer
 from .serializers import OrderItemSerializer
 from .serializers import WarrantyRequestSerializer
 from .externalcall import external_call, ExternalCallException
+from .tasks import request_warranty
 
 
 class ItemDetail(APIView):
@@ -83,7 +84,9 @@ class Warranty(APIView):
                                     f'{settings.WARRANTY_URL}api/v1/warranty/{item_uuid}/warranty',
                                     data=data)
             except ExternalCallException as e:
-                return Response({'message': str(e)}, status.HTTP_400_BAD_REQUEST)
+                request_warranty.delay(item_uuid, data)
+                return Response({'decision': 'BROKE_BUT_ITS_OK', 'date': 'UNKNOWN'},
+                                status.HTTP_200_OK)
             return Response(res.json(), res.status_code)
         return Response({'message': 'Bad request'},
                         status=status.HTTP_400_BAD_REQUEST)
