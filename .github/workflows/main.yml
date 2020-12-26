@@ -21,28 +21,28 @@ jobs:
       - name: Deploy Order to Heroku
         uses: AkhileshNS/heroku-deploy@v3.4.6
         with:
-          heroku_api_key: "f8244834-f822-4b39-b8b9-a29d90dbe91f"
+          heroku_api_key: "e7a42e44-ebad-4a40-b86d-84f4a75b0ef3"
           heroku_app_name: "shmarov-rsoi-lab2-order"
           heroku_email: "bambookchos@gmail.com"
           appdir: order_service
       - name: Deploy Store to Heroku
         uses: AkhileshNS/heroku-deploy@v3.4.6
         with:
-          heroku_api_key: "f8244834-f822-4b39-b8b9-a29d90dbe91f"
+          heroku_api_key: "e7a42e44-ebad-4a40-b86d-84f4a75b0ef3"
           heroku_app_name: "shmarov-rsoi-lab2-store"
           heroku_email: "bambookchos@gmail.com"
           appdir: store_service
       - name: Deploy Warehouse to Heroku
         uses: AkhileshNS/heroku-deploy@v3.4.6
         with:
-          heroku_api_key: "f8244834-f822-4b39-b8b9-a29d90dbe91f"
+          heroku_api_key: "e7a42e44-ebad-4a40-b86d-84f4a75b0ef3"
           heroku_app_name: "shmarov-rsoi-lab2-warehouse"
           heroku_email: "bambookchos@gmail.com"
           appdir: warehouse_service
       - name: Deploy Warranty to Heroku
         uses: AkhileshNS/heroku-deploy@v3.4.6
         with:
-          heroku_api_key: "f8244834-f822-4b39-b8b9-a29d90dbe91f"
+          heroku_api_key: "e7a42e44-ebad-4a40-b86d-84f4a75b0ef3"
           heroku_app_name: "shmarov-rsoi-lab2-warranty"
           heroku_email: "bambookchos@gmail.com"
           appdir: warranty_service
