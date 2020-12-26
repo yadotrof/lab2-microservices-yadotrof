@@ -42,9 +42,9 @@ class OrderActions(APIView):
                 except ExternalCallException as e:
                     try:
                         external_call(requests.delete,
-                                    f'{settings.WAREHOUSE_URL}api/v1/warehouse/{data['item_uuid']}')
-                        except ExternalCallException as e:
-                            pass
+                                     f'{settings.WAREHOUSE_URL}api/v1/warehouse/{data["item_uuid"]}')
+                    except ExternalCallException as e:
+                        pass
                     return Response({'message': str(e)}, status.HTTP_400_BAD_REQUEST)
                 Order.objects.create(uuid=data['order_uuid'],
                                      item_uuid=data['item_uuid'],
