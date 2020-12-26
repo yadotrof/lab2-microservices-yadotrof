@@ -131,7 +131,6 @@ STORE_URL = os.environ.get('STORE_URL', 'localhost:8000')
 ORDER_URL = os.environ.get('ORDER_URL', 'localhost:8001')
 WAREHOUSE_URL = os.environ.get('WAREHOUSE_URL', 'localhost:8002')
 WARRANTY_URL = os.environ.get('WARRANTY_URL', 'localhost:8003')
-
-CELERY_BROKER_URL= 'pyamqp://rabbitmq:5672'
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'pyamqp://rabbitmq:5672')
 # Activate Django-Heroku.
 django_heroku.settings(locals(), test_runner=False)
